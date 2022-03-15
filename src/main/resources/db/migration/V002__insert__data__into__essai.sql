@@ -1,0 +1,1 @@
+INSERT INTO  essai (label) VALUES('test');

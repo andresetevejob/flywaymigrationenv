@@ -1,0 +1,56 @@
+server:
+  port: 8581
+  error:
+    include-stacktrace: never
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  config:
+    activate:
+      on-profile: "dev" #https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Config-Data-Migration-Guide
+  datasource:
+    username: user_dvdrental
+    password: changeit
+    url: jdbc:postgresql://localhost:5432/rocky_db
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none #https://www.baeldung.com/spring-boot-data-sql-and-schema-sql
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    table: flyway_schema_history
+    sql-migration-prefix: V
+    sql-migration-suffixes: .sql
+    group: true
+    locations: classpath:/db/migration,classpath:/db/migration-dev
+---
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+  datasource:
+    username: user_dvdrental
+    password: changeit
+    url: jdbc:postgresql://localhost:5432/rocky_db_prod
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    table: flyway_schema_history
+    sql-migration-prefix: V
+    sql-migration-suffixes: .sql
+    group: true
+    locations: classpath:/db/migration
